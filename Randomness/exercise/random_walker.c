@@ -1,5 +1,11 @@
 /* EXERCISE - 0.1*/
 
+/* 
+    Logic is to generate random number from 1 - 100 then favour the probability
+    for down and right which is here 40%
+
+*/
+
 #include "raylib.h"
 
 const int WINDOW_WIDTH = 800;

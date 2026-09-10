@@ -9,6 +9,7 @@ typedef struct Ball {
 } Ball;
 
 void setValue(Ball *ball);
+void checkEdgeCollision(Ball *ball);
 
 int main(void) {
 
@@ -38,10 +39,12 @@ int main(void) {
         if(choice == 3) {
             ball.position.y--;
         }
+
+        checkEdgeCollision(&ball);
         
         BeginDrawing();
 
-            //ClearBackground(RAYWHITE);
+            ClearBackground(RAYWHITE);
             DrawCircleV(ball.position, ball.radius+10, BLUE);
             DrawCircleV(ball.position, ball.radius, SKYBLUE);
 
@@ -57,4 +60,23 @@ void setValue(Ball *ball) {
     ball->position.y = GetScreenHeight()/2.0f;
 
     ball->radius = GetRandomValue(30, 50);
+}
+
+void checkEdgeCollision(Ball *ball) {
+
+    if(ball->position.x > GetScreenWidth() - ball->radius) {
+        ball->position.x = GetScreenWidth() - ball->radius;
+    }
+
+    if (ball->position.x < ball->radius) {
+        ball->position.x = ball->radius;
+    }
+
+    if (ball->position.y > GetScreenHeight() - ball->radius) {
+        ball->position.y = GetScreenHeight() - ball->radius;
+    }
+
+    if (ball->position.y < ball->radius) {
+        ball->position.y = ball->radius;
+    }
 }
