@@ -5,7 +5,7 @@
 #include <stdbool.h>
 
 #define RAYGUI_IMPLEMENTATION
-#include "raygui.h"
+#include "../lib/raygui.h"
 
 const int WINDOW_WIDTH = 1080;
 const int WINDOW_HEIGHT = 900;
