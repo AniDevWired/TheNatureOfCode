@@ -19,6 +19,15 @@ randomW02: Randomness/exercise/random_walker02.c
 paint: Randomness/exercise/paint_splatter.c 
 	gcc -o bin/out.o Randomness/exercise/paint_splatter.c -I lib/ -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 
+Gwalk: Randomness/exercise/gaussian_walk.c 
+	gcc -o bin/out.o Randomness/exercise/gaussian_walk.c -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
+
+AR: Randomness/examples/accept_reject.c 
+	gcc -o bin/out.o Randomness/examples/accept_reject.c -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
+
+CP: Randomness/exercise/custom_prob.c 
+	gcc -o bin/out.o Randomness/exercise/custom_prob.c -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
+
 test1: test/test1.c 
 	gcc -o bin/test.o test/test1.c -I lib/ -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 
