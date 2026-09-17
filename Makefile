@@ -1,41 +1,40 @@
-randomW: Randomness/examples/random_walker.c 
-	gcc -o bin/out.o Randomness/examples/random_walker.c -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
+CC = gcc
+CFLAGS = -I lib/
+LIBS = -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
+BIN_DIR = bin
 
-randomN: Randomness/examples/random_number.c 
-	gcc -o bin/out.o Randomness/examples/random_number.c -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
+$(shell mkdir -p $(BIN_DIR))
 
-randomD: Randomness/examples/normal_distribution.c 
-	gcc -o bin/out.o Randomness/examples/normal_distribution.c -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
+# --- Randomness Examples ---
+randomW:    _SRC = Randomness/examples/random_walker.c
+randomN:    _SRC = Randomness/examples/random_number.c
+randomD:    _SRC = Randomness/examples/normal_distribution.c
+randomG:    _SRC = Randomness/examples/normal_gaussian.c
+AR:         _SRC = Randomness/examples/accept_reject.c
+PN:         _SRC = Randomness/examples/perlin_noise.c
+PW:         _SRC = Randomness/examples/perlin_walker.c
 
-randomG: Randomness/examples/normal_gaussian.c 
-	gcc -o bin/out.o Randomness/examples/normal_gaussian.c -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
+# --- Randomness Exercises ---
+randomW01:  _SRC = Randomness/exercise/random_walker01.c
+randomW02:  _SRC = Randomness/exercise/random_walker02.c
+paint:      _SRC = Randomness/exercise/paint_splatter.c
+Gwalk:      _SRC = Randomness/exercise/gaussian_walk.c
+CP:         _SRC = Randomness/exercise/custom_prob.c
 
-randomW01: Randomness/exercise/random_walker01.c 
-	gcc -o bin/out.o Randomness/exercise/random_walker01.c -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
+randomW randomN randomD randomG AR randomW01 randomW02 paint Gwalk CP PN PW:
+	$(CC) -o $(BIN_DIR)/out.o $(_SRC) $(CFLAGS) $(LIBS)
 
-randomW02: Randomness/exercise/random_walker02.c 
-	gcc -o bin/out.o Randomness/exercise/random_walker02.c -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
+test1: test/test1.c
+	$(CC) -o $(BIN_DIR)/test.o test/test1.c $(CFLAGS) $(LIBS)
 
-paint: Randomness/exercise/paint_splatter.c 
-	gcc -o bin/out.o Randomness/exercise/paint_splatter.c -I lib/ -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
-
-Gwalk: Randomness/exercise/gaussian_walk.c 
-	gcc -o bin/out.o Randomness/exercise/gaussian_walk.c -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
-
-AR: Randomness/examples/accept_reject.c 
-	gcc -o bin/out.o Randomness/examples/accept_reject.c -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
-
-CP: Randomness/exercise/custom_prob.c 
-	gcc -o bin/out.o Randomness/exercise/custom_prob.c -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
-
-test1: test/test1.c 
-	gcc -o bin/test.o test/test1.c -I lib/ -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
+test2: test/test2.c
+	$(CC) -o $(BIN_DIR)/test.o test/test2.c $(CFLAGS) $(LIBS)
 
 run: 
-	./bin/out.o
+	./$(BIN_DIR)/out.o
 
 runT: 
-	./bin/test.o
+	./$(BIN_DIR)/test.o
 
 clean: 
-	rm -rf bin/out.o
+	rm -rf $(BIN_DIR)/*

@@ -17,7 +17,7 @@ int main(void) {
     RenderTexture2D canvas = LoadRenderTexture(SCREEN_WIDTH, SCREEN_HEIGHT);
 
     BeginTextureMode(canvas);
-    ClearBackground(RAYWHITE);
+        ClearBackground(RAYWHITE);
     EndTextureMode();
 
     int height = SCREEN_HEIGHT/2;
