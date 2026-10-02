@@ -1,4 +1,4 @@
-/* PERLIN NOISE */
+/* EX-07 */
 
 #include <math.h>
 #include "raylib.h"
@@ -8,38 +8,54 @@
 
 float interpolate(float a, float b, float t);
 float getRandom(float x);
-float map(float value, float fromLow, float fromHigh, float toLow, float toHigh);
 float perlinNoise(float x, int octaves);
+float map(float value, float fromLow, float fromHigh, float toLow, float toHigh);
 
 int main(void) {
 
-    //window
-    InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Perlin Noise");
-	SetTargetFPS(100);
+	//window
+    InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Perlin Step");
+	SetTargetFPS(60);
 
-    float time = 0.0f;
+    RenderTexture2D canvas = LoadRenderTexture(WINDOW_WIDTH, WINDOW_HEIGHT);
+    
+    BeginTextureMode(canvas);
+        ClearBackground(RAYWHITE);
+    EndTextureMode();
+
+    float tx = 0.0f;
+    float ty = 10000.0f;
+
+    Vector2 prevPos = {WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f};
 
     while (!WindowShouldClose()) {
-        float xOff = time;
+        tx += 0.005f;
+        ty += 0.005f;
 
-		Vector2 prevPos = {0};
+        float noiseX = perlinNoise(tx, 2);
+        float noiseY = perlinNoise(ty, 2);
+
+        Vector2 currentPos;
+        currentPos.x = (noiseX + 0.5f) * WINDOW_WIDTH;
+        currentPos.y = (noiseY + 0.5f) * WINDOW_HEIGHT;
+
+        BeginTextureMode(canvas);
+            DrawLineEx(prevPos, currentPos, 2.0f, SKYBLUE);
+        EndTextureMode();
 
         BeginDrawing();
             ClearBackground(RAYWHITE);
-            for(int i = 0; i < WINDOW_WIDTH; i++) {
-                float y = perlinNoise(xOff, 4) * WINDOW_HEIGHT * 0.5f + WINDOW_HEIGHT/2.0f;
-                xOff += 0.01;
-				Vector2 currentPos = (Vector2) {i, y};
-                DrawLineEx(prevPos, currentPos, 1, SKYBLUE);
-				prevPos = currentPos;
-            }
+            DrawTextureRec(canvas.texture, (Rectangle){ 0, 0, (float)canvas.texture.width, (float)-canvas.texture.height }, (Vector2){ 0, 0 }, WHITE);
         EndDrawing();
-		time += 0.01;
+
+        prevPos = currentPos;
     }
 
+    UnloadRenderTexture(canvas);
     CloseWindow();
     return 0;
 }
+
 
 //### FOR 1D PERLIN NOISE ###//
 

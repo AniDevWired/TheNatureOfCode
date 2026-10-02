@@ -17,7 +17,7 @@ int main(void) {
 
     //window
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Perlin Walker");
-	SetTargetFPS(60);
+	SetTargetFPS(100);
 
     float tx = 0.0f;
     float ty = 10000.0f;
@@ -51,8 +51,8 @@ int main(void) {
             DrawCircleLinesV(pos, 50, BLUE);
         EndDrawing();
 
-		tx += 0.005;
-        ty += 0.005;
+		tx += 0.007;
+        ty += 0.007;
     }
 
     UnloadRenderTexture(canvas);

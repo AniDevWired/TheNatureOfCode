@@ -1,45 +1,69 @@
-/* PERLIN NOISE */
+/* 2D NOISE && EX-08 09 */
 
 #include <math.h>
 #include "raylib.h"
+
+#define RAYGUI_IMPLEMENTATION
+#include "../../lib/raygui.h"
 
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 500
 
 float interpolate(float a, float b, float t);
 float getRandom(float x);
+float perlinNoise(float x, int octaves); // Keep your 1D perlin declaration
 float map(float value, float fromLow, float fromHigh, float toLow, float toHigh);
-float perlinNoise(float x, int octaves);
 
 int main(void) {
 
     //window
-    InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Perlin Noise");
-	SetTargetFPS(100);
+    InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "2D NOISE");
+    SetTargetFPS(60);
 
-    float time = 0.0f;
+    RenderTexture2D canvas = LoadRenderTexture(WINDOW_WIDTH, WINDOW_HEIGHT);
+    
+    float xOff = 0.0f;
+	float xStep = 0.0f;
+	float yStep = 0.0f;
+    float octaves = 4;
 
     while (!WindowShouldClose()) {
-        float xOff = time;
 
-		Vector2 prevPos = {0};
+		if(IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)) {
+			BeginTextureMode(canvas);
+				ClearBackground(RAYWHITE);
+				xOff = xStep;
+				for(int i = 0; i < WINDOW_WIDTH; i++) {
+					float yOff = yStep;
+					for(int j = 0; j < WINDOW_HEIGHT; j++) {
+						float hue = map(perlinNoise(xOff + yOff, octaves), -0.5f, 0.5f, 0, 360);
+						float saturation = map(perlinNoise(xOff + yOff, octaves), -0.5f, 0.5f, 0, 180);
+						float value = map(perlinNoise(xOff + yOff, octaves), -0.5f, 0.5f, 0, 180);
+						Color color = ColorFromHSV(hue, saturation/100.0f, value/100.0f);
+						color.a = 140;
+						DrawPixelV((Vector2) {i, j}, color);
+						yOff += 0.01f;
+					}
+					xOff += 0.01f;
+				}
+			EndTextureMode();
+		}
 
         BeginDrawing();
             ClearBackground(RAYWHITE);
-            for(int i = 0; i < WINDOW_WIDTH; i++) {
-                float y = perlinNoise(xOff, 4) * WINDOW_HEIGHT * 0.5f + WINDOW_HEIGHT/2.0f;
-                xOff += 0.01;
-				Vector2 currentPos = (Vector2) {i, y};
-                DrawLineEx(prevPos, currentPos, 1, SKYBLUE);
-				prevPos = currentPos;
-            }
+            DrawTextureRec(canvas.texture, (Rectangle){ 0, 0, (float)canvas.texture.width, (float)-canvas.texture.height }, (Vector2){ 0, 0 }, WHITE);
+			GuiSlider((Rectangle) {50, WINDOW_HEIGHT - 20 - 30, 70, 20}, "Octaves", TextFormat("%d", (int) octaves), (float *)&octaves, 1, 10);
+			GuiSlider((Rectangle) {50, WINDOW_HEIGHT - 20 - 60, 70, 20}, "xStep", TextFormat("%0.2f", xStep), &xStep, 0, 10);
+			GuiSlider((Rectangle) {50, WINDOW_HEIGHT - 20 - 90, 70, 20}, "yStep", TextFormat("%0.2f", yStep), &yStep, 0, 10);
+			DrawText("Right-click to refresh noise", 10, 10, 24, BLUE);
         EndDrawing();
-		time += 0.01;
     }
 
+    UnloadRenderTexture(canvas);
     CloseWindow();
     return 0;
 }
+
 
 //### FOR 1D PERLIN NOISE ###//
 

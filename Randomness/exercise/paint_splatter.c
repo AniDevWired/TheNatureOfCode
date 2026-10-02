@@ -62,7 +62,7 @@ int main(void) {
             GuiSlider((Rectangle){ SCREEN_DIM - 240, 40, 200, 20 }, "Base Hue", TextFormat("%0.2f", baseHueSlider), &baseHueSlider, 0, 360);
             GuiSlider((Rectangle){ SCREEN_DIM - 240, 80, 200, 20 }, "Hue spread", TextFormat("%0.2f", huespSlider), &huespSlider, 0, 180);
             GuiSlider((Rectangle){ SCREEN_DIM - 240, 120, 200, 20 }, "Alpha", TextFormat("%0.2f", alphaSlider), &alphaSlider, 5, 255);
-            if (GuiButton((Rectangle){ (int)SCREEN_DIM/2-50, SCREEN_DIM - 40, 100, 25 }, "Clear Canvas")) {
+            if (GuiButton((Rectangle){ SCREEN_DIM/2.0f - 50, SCREEN_DIM - 40, 100, 25 }, "Clear Canvas")) {
                 BeginTextureMode(canvas);
                     ClearBackground(RAYWHITE);
                 EndTextureMode();
